@@ -1,0 +1,9 @@
+{
+  "name": "Copy of Copy of Smart Mart ",
+  "description": "An AI-powered assistant for local shopkeepers to list products, manage inventory, and create marketing content with Bengali voice guidance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
