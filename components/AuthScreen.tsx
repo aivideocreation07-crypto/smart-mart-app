@@ -1,26 +1,25 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Store, User, ArrowRight, MapPin, Loader2, Briefcase } from 'lucide-react';
-import { SHOP_CATEGORIES } from '../constants';
-import { BusinessType } from '../types';
+import { Store, User, ArrowRight, MapPin, Loader2, Briefcase, Wrench } from 'lucide-react';
+import { SHOP_CATEGORIES, SERVICE_CATEGORIES } from '../constants';
+import { BusinessType, UserRole } from '../types';
 
 interface AuthScreenProps {
   setVoiceContext: (ctx: string) => void;
 }
 
 export const AuthScreen: React.FC<AuthScreenProps> = ({ setVoiceContext }) => {
-  const { login, registerShopkeeper, registerCustomer } = useAuth();
+  const { login, registerShopkeeper, registerServiceProvider, registerCustomer } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState<'SHOPKEEPER' | 'CUSTOMER'>('SHOPKEEPER');
+  const [role, setRole] = useState<UserRole>(UserRole.SHOPKEEPER);
   
   // Form States
   const [mobile, setMobile] = useState('');
   const [name, setName] = useState('');
   const [shopName, setShopName] = useState('');
-  // Default to RETAIL (Mart)
-  const [businessType] = useState<BusinessType>(BusinessType.RETAIL);
-  const [shopCategory, setShopCategory] = useState(SHOP_CATEGORIES[0]);
+  const [category, setCategory] = useState('');
+  const [experience, setExperience] = useState('1');
+  
   const [location, setLocation] = useState<{lat: number, lng: number, address: string} | null>(null);
   const [isLoadingLoc, setIsLoadingLoc] = useState(false);
   const [error, setError] = useState('');
@@ -29,10 +28,14 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ setVoiceContext }) => {
     if (isLogin) {
       setVoiceContext("Welcome to Smart Mart. Please enter your mobile number to login.");
     } else {
-      if (role === 'SHOPKEEPER') {
-        setVoiceContext("Let's set up your online shop. What is your shop's name?");
+      if (role === UserRole.SHOPKEEPER) {
+        setVoiceContext("Let's set up your online shop.");
+        setCategory(SHOP_CATEGORIES[0]);
+      } else if (role === UserRole.SERVICE_PROVIDER) {
+        setVoiceContext("Create your Service Provider profile.");
+        setCategory(SERVICE_CATEGORIES[0]);
       } else {
-        setVoiceContext("Create a customer account to find nearby shops.");
+        setVoiceContext("Create a customer account to find nearby shops and services.");
       }
     }
   }, [isLogin, role, setVoiceContext]);
@@ -47,16 +50,20 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ setVoiceContext }) => {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    if (role === 'SHOPKEEPER') {
-      if (!location) {
-        setError('Please capture location first.');
-        return;
-      }
+    if (role === UserRole.SHOPKEEPER) {
+      if (!location) { setError('Please capture location first.'); return; }
       registerShopkeeper(name, mobile, {
         name: shopName,
-        category: shopCategory,
-        businessType: businessType,
+        category: category,
         location: location
+      });
+    } else if (role === UserRole.SERVICE_PROVIDER) {
+      if (!location) { setError('Please capture location first.'); return; }
+      registerServiceProvider(name, mobile, {
+        name: shopName, // Business Name
+        category: category,
+        location: location,
+        experienceYears: parseInt(experience)
       });
     } else {
       registerCustomer(name, mobile);
@@ -89,117 +96,130 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ setVoiceContext }) => {
   };
 
   return (
-    <div className="h-full bg-gray-900 p-6 flex flex-col justify-center animate-fade-in overflow-y-auto">
+    <div className="h-full bg-slate-50 p-6 flex flex-col justify-center animate-fade-in overflow-y-auto">
       <div className="text-center mb-8 mt-10">
-        <h1 className="text-3xl font-bold text-orange-500 mb-2">Smart Mart</h1>
-        <p className="text-gray-400">Your AI Partner for Local Business</p>
+        <h1 className="text-3xl font-bold text-orange-600 mb-2">Smart Mart</h1>
+        <p className="text-gray-500">Your AI Partner for Local Business</p>
       </div>
 
       {/* Toggle Login/Register */}
-      <div className="flex bg-gray-800 p-1 rounded-xl mb-6 border border-gray-700 shrink-0">
+      <div className="flex bg-white p-1 rounded-xl mb-6 border border-gray-200 shadow-sm shrink-0">
         <button 
           onClick={() => { setIsLogin(true); setError(''); }}
-          className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${isLogin ? 'bg-gray-700 shadow text-orange-500' : 'text-gray-400 hover:text-gray-300'}`}
+          className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${isLogin ? 'bg-slate-100 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
         >
           Login
         </button>
         <button 
           onClick={() => { setIsLogin(false); setError(''); }}
-          className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${!isLogin ? 'bg-gray-700 shadow text-orange-500' : 'text-gray-400 hover:text-gray-300'}`}
+          className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${!isLogin ? 'bg-slate-100 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
         >
           Register
         </button>
       </div>
 
       {!isLogin && (
-        <div className="grid grid-cols-2 gap-4 mb-6 shrink-0">
+        <div className="grid grid-cols-3 gap-2 mb-6 shrink-0">
            <button 
-             onClick={() => setRole('SHOPKEEPER')}
-             className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-colors ${role === 'SHOPKEEPER' ? 'border-orange-500 bg-orange-900/20 text-orange-500' : 'border-gray-700 bg-gray-800 text-gray-500 hover:bg-gray-700'}`}
+             onClick={() => setRole(UserRole.SHOPKEEPER)}
+             className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1 transition-colors ${role === UserRole.SHOPKEEPER ? 'border-orange-500 bg-orange-50 text-orange-600' : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'}`}
            >
-             <Store size={24} />
-             <span className="font-bold text-xs">Seller / Business</span>
+             <Store size={20} />
+             <span className="font-bold text-[10px]">Retailer</span>
            </button>
            <button 
-             onClick={() => setRole('CUSTOMER')}
-             className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-colors ${role === 'CUSTOMER' ? 'border-orange-500 bg-orange-900/20 text-orange-500' : 'border-gray-700 bg-gray-800 text-gray-500 hover:bg-gray-700'}`}
+             onClick={() => setRole(UserRole.SERVICE_PROVIDER)}
+             className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1 transition-colors ${role === UserRole.SERVICE_PROVIDER ? 'border-cyan-500 bg-cyan-50 text-cyan-600' : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'}`}
            >
-             <User size={24} />
-             <span className="font-bold text-xs">Buyer / User</span>
+             <Wrench size={20} />
+             <span className="font-bold text-[10px]">Service</span>
+           </button>
+           <button 
+             onClick={() => setRole(UserRole.CUSTOMER)}
+             className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1 transition-colors ${role === UserRole.CUSTOMER ? 'border-green-500 bg-green-50 text-green-600' : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'}`}
+           >
+             <User size={20} />
+             <span className="font-bold text-[10px]">Customer</span>
            </button>
         </div>
       )}
 
       <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">
-        {error && <div className="p-3 bg-red-900/30 border border-red-900/50 text-red-400 rounded-lg text-sm font-medium">{error}</div>}
+        {error && <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">{error}</div>}
 
         {!isLogin && (
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
             <input 
               required
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-600"
+              className="w-full p-3 rounded-xl border border-gray-200 bg-white text-slate-900 focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-400"
               placeholder="e.g. Rahim Uddin"
             />
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-1">Mobile Number</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">Mobile Number</label>
           <input 
             required
             type="tel" 
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
-            className="w-full p-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-600"
+            className="w-full p-3 rounded-xl border border-gray-200 bg-white text-slate-900 focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-400"
             placeholder="01XXXXXXXXX"
           />
         </div>
 
-        {/* Shopkeeper Specific Fields */}
-        {!isLogin && role === 'SHOPKEEPER' && (
+        {/* Business Specific Fields */}
+        {!isLogin && (role === UserRole.SHOPKEEPER || role === UserRole.SERVICE_PROVIDER) && (
           <div className="space-y-4 animate-fade-in">
-             {/* Business Type is now implicitly Mart (Retail) - Hidden/ReadOnly */}
-             <div className="flex items-center gap-2 p-3 bg-orange-900/20 border border-orange-500/50 rounded-xl">
-                 <Briefcase size={16} className="text-orange-500"/>
-                 <span className="text-sm font-bold text-orange-400">Business Type: Mart</span>
-             </div>
-
              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Shop Name</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">{role === UserRole.SHOPKEEPER ? 'Shop Name' : 'Business / Provider Name'}</label>
                 <input 
                   required
                   type="text" 
                   value={shopName}
                   onChange={(e) => setShopName(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-600"
-                  placeholder="e.g. Rahim General Store"
+                  className="w-full p-3 rounded-xl border border-gray-200 bg-white text-slate-900 focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder-gray-400"
+                  placeholder={role === UserRole.SHOPKEEPER ? "e.g. Rahim Store" : "e.g. Rahim Electric Works"}
                 />
              </div>
              
              <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Category</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Category (Profession)</label>
                 <select 
-                  value={shopCategory}
-                  onChange={(e) => setShopCategory(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-gray-700 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-orange-500"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full p-3 rounded-xl border border-gray-200 bg-white text-slate-900 outline-none focus:ring-2 focus:ring-orange-500"
                 >
-                  {SHOP_CATEGORIES.map(cat => (
+                  {(role === UserRole.SHOPKEEPER ? SHOP_CATEGORIES : SERVICE_CATEGORIES).map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
                 </select>
              </div>
 
+             {role === UserRole.SERVICE_PROVIDER && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">Experience (Years)</label>
+                  <input 
+                    type="number" 
+                    value={experience}
+                    onChange={(e) => setExperience(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-gray-200 bg-white text-slate-900 outline-none focus:ring-2 focus:ring-orange-500"
+                  />
+                </div>
+             )}
+
              <button
                type="button"
                onClick={captureLocation}
-               className={`w-full py-3 rounded-xl border-2 border-dashed flex items-center justify-center space-x-2 transition-colors ${location ? 'border-green-600 bg-green-900/20 text-green-500' : 'border-gray-700 text-gray-500 hover:border-gray-600 hover:text-gray-400'}`}
+               className={`w-full py-3 rounded-xl border-2 border-dashed flex items-center justify-center space-x-2 transition-colors ${location ? 'border-green-600 bg-green-50 text-green-600' : 'border-gray-300 text-gray-500 hover:border-gray-400 hover:text-gray-600'}`}
              >
                {isLoadingLoc ? <Loader2 className="animate-spin" /> : <MapPin size={20} />}
-               <span>{location ? location.address : "Tap to Capture Shop Location"}</span>
+               <span>{location ? location.address : "Tap to Capture Location"}</span>
              </button>
           </div>
         )}
@@ -213,7 +233,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ setVoiceContext }) => {
         </button>
       </form>
 
-      <p className="text-center text-xs text-gray-600 mt-8 pb-10">
+      <p className="text-center text-xs text-gray-500 mt-8 pb-10">
         By continuing, you agree to Smart Mart's Terms & Conditions.
       </p>
     </div>

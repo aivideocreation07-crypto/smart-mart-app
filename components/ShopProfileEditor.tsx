@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { ArrowLeft, Save, Upload, Facebook, Instagram, Youtube, MessageCircle, QrCode, Truck, MapPin, Clock, RotateCcw } from 'lucide-react';
@@ -39,13 +38,13 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#020617] animate-fade-in text-white pb-20">
-      <div className="p-4 flex items-center justify-between bg-black/20 backdrop-blur-md border-b border-white/5 sticky top-0 z-20">
+    <div className="h-full flex flex-col bg-slate-50 animate-fade-in text-slate-900 pb-20">
+      <div className="p-4 flex items-center justify-between bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-20">
         <div className="flex items-center gap-3">
-            <button onClick={onBack} className="p-2 rounded-full hover:bg-white/10"><ArrowLeft size={20} /></button>
-            <h2 className="font-bold text-lg uppercase tracking-wider">Shop Settings</h2>
+            <button onClick={onBack} className="p-2 rounded-full hover:bg-slate-100"><ArrowLeft size={20} className="text-slate-700" /></button>
+            <h2 className="font-bold text-lg uppercase tracking-wider text-slate-900">Shop Settings</h2>
         </div>
-        <button onClick={handleSave} className="bg-orange-600 text-white px-5 py-2 rounded-full font-bold text-sm shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+        <button onClick={handleSave} className="bg-orange-600 text-white px-5 py-2 rounded-full font-bold text-sm shadow-md hover:bg-orange-500 transition-transform flex items-center gap-2">
             <Save size={16}/> SAVE
         </button>
       </div>
@@ -54,11 +53,11 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
         {/* Banner Section */}
         <div className="space-y-2">
             <label className="text-xs text-gray-500 uppercase tracking-widest font-bold">Storefront Banner</label>
-            <div onClick={() => bannerInputRef.current?.click()} className="h-40 w-full rounded-2xl bg-gray-900 border border-dashed border-gray-700 relative overflow-hidden group cursor-pointer hover:border-orange-500 transition-colors">
+            <div onClick={() => bannerInputRef.current?.click()} className="h-40 w-full rounded-2xl bg-white border border-dashed border-gray-300 relative overflow-hidden group cursor-pointer hover:border-orange-500 transition-colors shadow-sm">
                 {formData.bannerUrl ? (
-                    <img src={formData.bannerUrl} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <img src={formData.bannerUrl} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                 ) : (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-600 group-hover:text-orange-500">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-orange-500">
                         <Upload size={32} className="mb-2"/>
                         <span className="text-xs">Upload 16:9 HD Image</span>
                     </div>
@@ -69,47 +68,47 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
 
         {/* Brand Identity */}
         <div className="flex gap-5">
-            <div onClick={() => fileInputRef.current?.click()} className="w-24 h-24 rounded-full bg-gray-900 border border-dashed border-gray-700 flex items-center justify-center shrink-0 cursor-pointer hover:border-orange-500 overflow-hidden relative group">
-                 {formData.imageUrl ? <img src={formData.imageUrl} className="w-full h-full object-cover" /> : <Upload size={24} className="text-gray-600 group-hover:text-orange-500"/>}
+            <div onClick={() => fileInputRef.current?.click()} className="w-24 h-24 rounded-full bg-white border border-dashed border-gray-300 flex items-center justify-center shrink-0 cursor-pointer hover:border-orange-500 overflow-hidden relative group shadow-sm">
+                 {formData.imageUrl ? <img src={formData.imageUrl} className="w-full h-full object-cover" /> : <Upload size={24} className="text-gray-400 group-hover:text-orange-500"/>}
                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={(e) => handleImageUpload('logo', e)} />
             </div>
             <div className="flex-1 space-y-4">
-                <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-2 focus-within:border-orange-500 transition-colors">
-                    <label className="block text-[10px] text-gray-500 uppercase">Shop Name</label>
-                    <input type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="bg-transparent w-full text-white font-bold outline-none"/>
+                <div className="bg-white border border-gray-200 rounded-xl px-3 py-2 focus-within:border-orange-500 transition-colors shadow-sm">
+                    <label className="block text-[10px] text-gray-400 uppercase">Shop Name</label>
+                    <input type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="bg-transparent w-full text-slate-900 font-bold outline-none"/>
                 </div>
-                <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-                    <label className="block text-[10px] text-gray-500 uppercase">Category</label>
-                    <select value={formData.category || ''} onChange={e => setFormData({...formData, category: e.target.value})} className="bg-transparent w-full text-white outline-none">
-                         {SHOP_CATEGORIES.map(cat => <option key={cat} value={cat} className="bg-gray-900">{cat}</option>)}
+                <div className="bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+                    <label className="block text-[10px] text-gray-400 uppercase">Category</label>
+                    <select value={formData.category || ''} onChange={e => setFormData({...formData, category: e.target.value})} className="bg-transparent w-full text-slate-900 outline-none">
+                         {SHOP_CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                     </select>
                 </div>
             </div>
         </div>
 
         {/* Operating Hours & Policy */}
-        <div className="glass-panel p-5 rounded-2xl border-t border-purple-500/30">
-            <h3 className="text-purple-400 text-xs font-bold uppercase tracking-widest mb-4">Operations & Policies</h3>
+        <div className="glass-panel p-5 rounded-2xl border-t border-purple-200 bg-white">
+            <h3 className="text-purple-600 text-xs font-bold uppercase tracking-widest mb-4">Operations & Policies</h3>
             <div className="space-y-4">
                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-black/40 border border-white/5 rounded-xl p-3">
+                    <div className="bg-slate-50 border border-gray-200 rounded-xl p-3">
                          <label className="block text-[10px] text-gray-500 uppercase mb-1 flex items-center gap-1"><Clock size={10}/> Open</label>
-                         <input type="time" value={formData.openingTime || '09:00'} onChange={e => setFormData({...formData, openingTime: e.target.value})} className="bg-transparent w-full text-white outline-none"/>
+                         <input type="time" value={formData.openingTime || '09:00'} onChange={e => setFormData({...formData, openingTime: e.target.value})} className="bg-transparent w-full text-slate-900 outline-none"/>
                     </div>
-                    <div className="bg-black/40 border border-white/5 rounded-xl p-3">
+                    <div className="bg-slate-50 border border-gray-200 rounded-xl p-3">
                          <label className="block text-[10px] text-gray-500 uppercase mb-1 flex items-center gap-1"><Clock size={10}/> Close</label>
-                         <input type="time" value={formData.closingTime || '22:00'} onChange={e => setFormData({...formData, closingTime: e.target.value})} className="bg-transparent w-full text-white outline-none"/>
+                         <input type="time" value={formData.closingTime || '22:00'} onChange={e => setFormData({...formData, closingTime: e.target.value})} className="bg-transparent w-full text-slate-900 outline-none"/>
                     </div>
                  </div>
 
-                 <div className="bg-black/40 border border-white/5 rounded-xl p-3">
+                 <div className="bg-slate-50 border border-gray-200 rounded-xl p-3">
                     <label className="block text-[10px] text-gray-500 uppercase mb-2 flex items-center gap-1"><RotateCcw size={10}/> Advance Refund Policy</label>
                     <div className="flex gap-2">
                         {['NO_REFUND', '50_PERCENT', 'FULL_REFUND'].map((policy) => (
                             <button 
                                 key={policy}
                                 onClick={() => setFormData({...formData, refundPolicy: policy as any})}
-                                className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-colors ${formData.refundPolicy === policy ? 'bg-purple-900/40 border-purple-500 text-purple-400' : 'border-white/10 text-gray-500'}`}
+                                className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-colors ${formData.refundPolicy === policy ? 'bg-purple-100 border-purple-300 text-purple-600' : 'border-gray-200 text-gray-500 bg-white'}`}
                             >
                                 {policy.replace('_PERCENT', '%').replace('_', ' ')}
                             </button>
@@ -120,10 +119,10 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
         </div>
 
         {/* Payments & Logistics */}
-        <div className="glass-panel p-5 rounded-2xl border-t border-orange-500/30">
-            <h3 className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-4">Advance Payments & Logistics</h3>
+        <div className="glass-panel p-5 rounded-2xl border-t border-orange-200 bg-white">
+            <h3 className="text-orange-600 text-xs font-bold uppercase tracking-widest mb-4">Advance Payments & Logistics</h3>
             <div className="space-y-4">
-                <div className="flex items-center bg-black/40 border border-white/5 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
+                <div className="flex items-center bg-slate-50 border border-gray-200 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
                     <QrCode size={20} className="text-gray-400 mr-3"/>
                     <div className="flex-1">
                         <label className="block text-[10px] text-gray-500 uppercase">UPI ID (For QR Code)</label>
@@ -132,12 +131,12 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
                             value={formData.upiId || ''}
                             onChange={e => setFormData({...formData, upiId: e.target.value})}
                             placeholder="e.g. yourname@okaxis"
-                            className="bg-transparent w-full text-white font-mono outline-none"
+                            className="bg-transparent w-full text-slate-900 font-mono outline-none placeholder-gray-400"
                         />
                     </div>
                 </div>
 
-                 <div className="flex items-center bg-black/40 border border-white/5 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
+                 <div className="flex items-center bg-slate-50 border border-gray-200 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
                     <Truck size={20} className="text-gray-400 mr-3"/>
                     <div className="flex-1">
                         <label className="block text-[10px] text-gray-500 uppercase">Delivery Partner Name</label>
@@ -146,12 +145,12 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
                             value={formData.deliveryPartnerName || ''}
                             onChange={e => setFormData({...formData, deliveryPartnerName: e.target.value})}
                             placeholder="e.g. Local Courier / Self"
-                            className="bg-transparent w-full text-white outline-none"
+                            className="bg-transparent w-full text-slate-900 outline-none placeholder-gray-400"
                         />
                     </div>
                 </div>
 
-                <div className="flex items-center bg-black/40 border border-white/5 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
+                <div className="flex items-center bg-slate-50 border border-gray-200 rounded-xl p-3 focus-within:border-orange-500 transition-colors">
                     <MapPin size={20} className="text-gray-400 mr-3"/>
                     <div className="flex-1">
                         <label className="block text-[10px] text-gray-500 uppercase">Max Booking Distance (KM)</label>
@@ -160,7 +159,7 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
                             value={formData.maxBookingDistance || ''}
                             onChange={e => setFormData({...formData, maxBookingDistance: Number(e.target.value)})}
                             placeholder="e.g. 5"
-                            className="bg-transparent w-full text-white outline-none"
+                            className="bg-transparent w-full text-slate-900 outline-none placeholder-gray-400"
                         />
                     </div>
                 </div>
@@ -168,23 +167,23 @@ export const ShopProfileEditor: React.FC<ShopProfileEditorProps> = ({ onBack, se
         </div>
 
         {/* Social Panel */}
-        <div className="glass-panel p-5 rounded-2xl border-t border-cyan-500/30">
-            <h3 className="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4">Digital Presence</h3>
+        <div className="glass-panel p-5 rounded-2xl border-t border-cyan-200 bg-white">
+            <h3 className="text-cyan-600 text-xs font-bold uppercase tracking-widest mb-4">Digital Presence</h3>
             <div className="space-y-3">
                 {[
-                    { icon: Facebook, color: 'text-blue-500', key: 'facebook', ph: 'Facebook Page URL' },
-                    { icon: Instagram, color: 'text-pink-500', key: 'instagram', ph: 'Instagram Handle' },
-                    { icon: MessageCircle, color: 'text-green-500', key: 'whatsapp', ph: 'WhatsApp Number' },
-                    { icon: Youtube, color: 'text-red-500', key: 'youtube', ph: 'YouTube Channel' }
+                    { icon: Facebook, color: 'text-blue-600', key: 'facebook', ph: 'Facebook Page URL' },
+                    { icon: Instagram, color: 'text-pink-600', key: 'instagram', ph: 'Instagram Handle' },
+                    { icon: MessageCircle, color: 'text-green-600', key: 'whatsapp', ph: 'WhatsApp Number' },
+                    { icon: Youtube, color: 'text-red-600', key: 'youtube', ph: 'YouTube Channel' }
                 ].map((item) => (
-                    <div key={item.key} className="flex items-center bg-black/40 border border-white/5 rounded-xl p-2 focus-within:border-cyan-500/50 transition-colors">
+                    <div key={item.key} className="flex items-center bg-slate-50 border border-gray-200 rounded-xl p-2 focus-within:border-cyan-500/50 transition-colors">
                         <item.icon size={20} className={`${item.color} mx-2`} />
                         <input 
                             type="text" 
                             placeholder={item.ph}
                             value={(socialLinks as any)[item.key] || ''}
                             onChange={e => setSocialLinks({...socialLinks, [item.key]: e.target.value})}
-                            className="bg-transparent flex-1 text-sm text-gray-300 outline-none placeholder-gray-600"
+                            className="bg-transparent flex-1 text-sm text-slate-900 outline-none placeholder-gray-400"
                         />
                     </div>
                 ))}

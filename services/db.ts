@@ -14,9 +14,9 @@ const STORAGE_KEYS = {
   REVIEWS: 'smart_mart_reviews'
 };
 
-// --- MOCK SHOPS (Jhargram & Dhaka Mix) ---
+// --- MOCK SHOPS & PROVIDERS ---
 const MOCK_SHOPS: Shop[] = [
-  // 1. Restaurant (Jhargram)
+  // ... Existing Retail Shops ...
   {
     id: 's_jh_1',
     ownerId: 'u_jh_1',
@@ -39,54 +39,6 @@ const MOCK_SHOPS: Shop[] = [
     isCodAvailable: false, 
     refundPolicy: '50_PERCENT'
   },
-  // 2. Barber (Jhargram)
-  {
-    id: 's_jh_2',
-    ownerId: 'u_jh_2',
-    name: 'Glow Barber Shop',
-    ownerName: 'Samir Das',
-    category: 'Barber',
-    businessType: BusinessType.RETAIL,
-    location: { lat: 22.4400, lng: 86.9800, address: 'Raghunathpur, Jhargram' },
-    phone: '01722222222',
-    rating: 4.8,
-    ratingCount: 156,
-    imageUrl: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400',
-    bannerUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800',
-    upiId: 'glowbarber@upi',
-    openingTime: '08:00',
-    closingTime: '21:00',
-    maxBookingDistance: 5,
-    isPickupAvailable: true, 
-    isDeliveryAvailable: false,
-    isCodAvailable: false, 
-    refundPolicy: 'NO_REFUND'
-  },
-  // 3. Grocery (Jhargram)
-  {
-    id: 's_jh_3',
-    ownerId: 'u_jh_3',
-    name: 'QuickDeliver Grocery',
-    ownerName: 'Ratan Saha',
-    category: 'Grocery',
-    businessType: BusinessType.RETAIL,
-    location: { lat: 22.4600, lng: 87.0000, address: 'Main Market, Jhargram' },
-    phone: '01733333333',
-    rating: 4.2,
-    ratingCount: 340,
-    imageUrl: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=400',
-    bannerUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
-    upiId: 'quickgrocer@upi',
-    openingTime: '07:30',
-    closingTime: '22:00',
-    maxBookingDistance: 10,
-    isPickupAvailable: true,
-    isDeliveryAvailable: true,
-    isCodAvailable: true,
-    hasDeliveryPartner: true,
-    deliveryPartnerName: 'Jhargram Express'
-  },
-  // 4. Pharmacy (Dhaka - Uttara)
   {
     id: 's_dh_1',
     ownerId: 'u_dh_1',
@@ -109,149 +61,181 @@ const MOCK_SHOPS: Shop[] = [
     isCodAvailable: true,
     deliveryPartnerName: 'Self Delivery'
   },
-  // 5. Electronics (Dhaka - Uttara)
+
+  // --- NEW SERVICE PROVIDERS ---
   {
-    id: 's_dh_2',
-    ownerId: 'u_dh_2',
-    name: 'Gadget Zone',
-    ownerName: 'Fahim Ahmed',
-    category: 'Electronics',
-    businessType: BusinessType.RETAIL,
-    location: { lat: 23.8130, lng: 90.4150, address: 'Sector 7, Uttara, Dhaka' },
-    phone: '01822222222',
-    rating: 4.3,
+    id: 'prov_1',
+    ownerId: 'u_prov_1',
+    name: 'Rahim Electric Works',
+    ownerName: 'Rahim Mia',
+    category: 'Electrician',
+    businessType: BusinessType.SERVICE,
+    location: { lat: 23.8150, lng: 90.4130, address: 'Uttara, Dhaka' },
+    phone: '01999999999',
+    rating: 4.8,
     ratingCount: 45,
-    imageUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=400',
-    bannerUrl: 'https://images.unsplash.com/photo-1593344484962-796055d4a3a4?w=800',
-    openingTime: '11:00',
-    closingTime: '21:00',
+    imageUrl: 'https://images.unsplash.com/photo-1621905476059-5f34604242fa?w=400',
+    bannerUrl: 'https://images.unsplash.com/photo-1621905476059-5f34604242fa?w=800',
+    upiId: 'rahim@upi',
+    openingTime: '09:00',
+    closingTime: '20:00',
     maxBookingDistance: 10,
-    isPickupAvailable: true,
-    isDeliveryAvailable: false, // In-store only for expensive items
-    isCodAvailable: false,
-    refundPolicy: 'NO_REFUND'
-  },
-  // 6. Sweets/Bakery (Jhargram)
-  {
-    id: 's_jh_4',
-    ownerId: 'u_jh_4',
-    name: 'Mondal Sweets',
-    ownerName: 'Bipul Mondal',
-    category: 'Bakery & Snacks',
-    businessType: BusinessType.RETAIL,
-    location: { lat: 22.4550, lng: 86.9950, address: 'Bazar Road, Jhargram' },
-    phone: '01833333333',
-    rating: 4.7,
-    ratingCount: 500,
-    imageUrl: 'https://images.unsplash.com/photo-1559598467-f8b76c8155d0?w=400',
-    bannerUrl: 'https://images.unsplash.com/photo-1612203985729-70726954388c?w=800',
-    upiId: 'mondalsweets@upi',
-    openingTime: '07:00',
-    closingTime: '22:00',
-    maxBookingDistance: 2,
-    isPickupAvailable: true,
-    isDeliveryAvailable: true,
+    isPickupAvailable: false,
+    isDeliveryAvailable: true, // Home Service
     isCodAvailable: true,
-    refundPolicy: 'FULL_REFUND'
+    isVerified: true,
+    isKycVerified: true,
+    experienceYears: 8,
+    visitingCharge: 200,
+    portfolioUrls: [
+      'https://images.unsplash.com/photo-1558402529-d2638a7023e9?w=400',
+      'https://images.unsplash.com/photo-1544724569-5f546fd6dd2d?w=400'
+    ]
+  },
+  {
+    id: 'prov_2',
+    ownerId: 'u_prov_2',
+    name: 'Glow Beauty Hub',
+    ownerName: 'Sadia Islam',
+    category: "Women's Beauty",
+    businessType: BusinessType.SERVICE,
+    location: { lat: 22.4550, lng: 86.9950, address: 'Jhargram' },
+    phone: '01888888888',
+    rating: 4.9,
+    ratingCount: 120,
+    imageUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400',
+    bannerUrl: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800',
+    upiId: 'sadia@upi',
+    openingTime: '10:00',
+    closingTime: '19:00',
+    maxBookingDistance: 5,
+    isPickupAvailable: true, // Visit Parlour
+    isDeliveryAvailable: true, // Home Service
+    isCodAvailable: true,
+    isVerified: true,
+    experienceYears: 5,
+    visitingCharge: 100,
+    portfolioUrls: [
+      'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=400',
+      'https://images.unsplash.com/photo-1596178065573-efc716752f9b?w=400'
+    ]
   }
 ];
 
 const SEED_PRODUCTS: Product[] = [
-  // Restaurant Items
-  { id: 'p_res_1', shopId: 's_jh_1', name: 'Chicken Biryani', nameBn: 'চিকেন বিরিয়ানি', price: 220, category: 'Food', description: 'Kolkata style with potato.', stock: 50, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400' },
-  { id: 'p_res_2', shopId: 's_jh_1', name: 'Egg Roll', nameBn: 'ডিম রোল', price: 50, category: 'Snacks', description: 'Spicy and crunchy.', stock: 100, enableBooking: false, imageUrl: 'https://images.unsplash.com/photo-1606335191932-f245c6136a8d?w=400' },
-  
-  // Barber Services
-  { id: 'p_bar_1', shopId: 's_jh_2', name: 'Haircut', nameBn: 'চুল কাটা', price: 80, category: 'Service', description: 'Professional styling.', stock: 999, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1593702295094-aea8c5c93169?w=400' },
-  { id: 'p_bar_2', shopId: 's_jh_2', name: 'Shaving', nameBn: 'শেভিং', price: 50, category: 'Service', description: 'Clean shave with foam.', stock: 999, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400' },
-
-  // Grocery Items
-  { id: 'p_gro_1', shopId: 's_jh_3', name: 'Mustard Oil (1L)', nameBn: 'সরিষার তেল', price: 180, category: 'Grocery', description: 'Pure Ghani oil.', stock: 100, enableBooking: false, imageUrl: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400' },
-  { id: 'p_gro_2', shopId: 's_jh_3', name: 'Miniket Rice (5kg)', nameBn: 'মিনিকেট চাল', price: 350, category: 'Grocery', description: 'Premium quality rice.', stock: 20, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400' },
-
-  // Pharmacy Items (MedLife)
+  // Retail Products (Existing)
   { id: 'p_phar_1', shopId: 's_dh_1', name: 'Napa Extra', nameBn: 'নাপা এক্সট্রা', price: 25, category: 'Medicine', description: 'For fever and pain.', stock: 500, enableBooking: false, imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400' },
-  { id: 'p_phar_2', shopId: 's_dh_1', name: 'Digital Thermometer', nameBn: 'থার্মোমিটার', price: 150, category: 'Medical Device', description: 'Accurate reading.', stock: 15, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?w=400' },
 
-  // Electronics (Gadget Zone)
-  { id: 'p_elec_1', shopId: 's_dh_2', name: 'USB-C Cable', nameBn: 'চার্জিং কেবল', price: 300, category: 'Accessories', description: 'Fast charging supported.', stock: 50, enableBooking: false, imageUrl: 'https://images.unsplash.com/photo-1622737133809-d95047b9e673?w=400' },
-  { id: 'p_elec_2', shopId: 's_dh_2', name: 'Bluetooth Headset', nameBn: 'ব্লুটুথ হেডসেট', price: 1200, category: 'Audio', description: 'Bass boosted sound.', stock: 10, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400' },
-
-  // Sweets (Mondal Sweets)
-  { id: 'p_swt_1', shopId: 's_jh_4', name: 'Rosogolla (1kg)', nameBn: 'রসগোল্লা', price: 250, category: 'Sweets', description: 'Famous spongy sweets.', stock: 30, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1589119908995-c6837fa14848?w=400' },
-  { id: 'p_swt_2', shopId: 's_jh_4', name: 'Chocolate Cake', nameBn: 'চকলেট কেক', price: 600, category: 'Bakery', description: '1 Pound birthday cake.', stock: 5, enableBooking: true, imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400' }
+  // Service Listings
+  { 
+    id: 'srv_1', 
+    shopId: 'prov_1', 
+    name: 'Fan Installation', 
+    nameBn: 'ফ্যান লাগানো', 
+    price: 300, 
+    category: 'Service', 
+    description: 'Ceiling or wall fan installation.', 
+    stock: 999, 
+    enableBooking: true, 
+    durationMinutes: 45,
+    imageUrl: 'https://images.unsplash.com/photo-1621905476059-5f34604242fa?w=400' 
+  },
+  { 
+    id: 'srv_2', 
+    shopId: 'prov_1', 
+    name: 'Full House Wiring Check', 
+    nameBn: 'ওয়ারিং চেক', 
+    price: 1500, 
+    category: 'Service', 
+    description: 'Complete diagnosis and minor fixing.', 
+    stock: 999, 
+    enableBooking: true, 
+    durationMinutes: 120,
+    imageUrl: 'https://images.unsplash.com/photo-1558402529-d2638a7023e9?w=400' 
+  },
+  { 
+    id: 'srv_3', 
+    shopId: 'prov_2', 
+    name: 'Party Makeup', 
+    nameBn: 'পার্টি মেকআপ', 
+    price: 2500, 
+    category: 'Service', 
+    description: 'Full face makeup with hair styling.', 
+    stock: 999, 
+    enableBooking: true, 
+    durationMinutes: 90,
+    imageUrl: 'https://images.unsplash.com/photo-1487412947132-232a8408a3dd?w=400' 
+  },
+  { 
+    id: 'srv_4', 
+    shopId: 'prov_2', 
+    name: 'Facial', 
+    nameBn: 'ফেসিয়াল', 
+    price: 1200, 
+    category: 'Service', 
+    description: 'Gold facial for glowing skin.', 
+    stock: 999, 
+    enableBooking: true, 
+    durationMinutes: 60,
+    imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400' 
+  }
 ];
 
 const SEED_USERS: User[] = [
-  // Shopkeepers (Existing)
+  // Shopkeepers
   { id: 'u_jh_1', name: 'Amit Roy', mobile: '01711111111', role: UserRole.SHOPKEEPER, shopId: 's_jh_1' },
-  { id: 'u_jh_2', name: 'Samir Das', mobile: '01722222222', role: UserRole.SHOPKEEPER, shopId: 's_jh_2' }, 
-  { id: 'u_jh_3', name: 'Ratan Saha', mobile: '01733333333', role: UserRole.SHOPKEEPER, shopId: 's_jh_3' },
+  { id: 'u_dh_1', name: 'Dr. Hasan', mobile: '01811111111', role: UserRole.SHOPKEEPER, shopId: 's_dh_1' },
   
-  // Shopkeepers (New)
-  { id: 'u_dh_1', name: 'Dr. Hasan', mobile: '01811111111', role: UserRole.SHOPKEEPER, shopId: 's_dh_1' }, // Pharmacy
-  { id: 'u_dh_2', name: 'Fahim Ahmed', mobile: '01822222222', role: UserRole.SHOPKEEPER, shopId: 's_dh_2' }, // Electronics
-  { id: 'u_jh_4', name: 'Bipul Mondal', mobile: '01833333333', role: UserRole.SHOPKEEPER, shopId: 's_jh_4' }, // Sweets
-  
+  // Providers
+  { id: 'u_prov_1', name: 'Rahim Mia', mobile: '01999999999', role: UserRole.SERVICE_PROVIDER, shopId: 'prov_1' },
+  { id: 'u_prov_2', name: 'Sadia Islam', mobile: '01888888888', role: UserRole.SERVICE_PROVIDER, shopId: 'prov_2' },
+
   // Customer
   { id: 'u_cust_1', name: 'Anirban', mobile: '9800000000', role: UserRole.CUSTOMER, location: { lat: 22.4450, lng: 86.9850, label: 'Jhargram Home' }, savedAddress: 'College Para, Jhargram' }
 ];
 
 const SEED_ORDERS: Order[] = [
-  // Anirban's Booking at Glow Barber Shop
+  // Retail Order
   {
-    id: 'ord_sample_1',
-    shopId: 's_jh_2',
+    id: 'ord_ret_1',
+    shopId: 's_dh_1',
     customerId: 'u_cust_1',
     customerName: 'Anirban',
     customerMobile: '9800000000',
-    items: [{ productId: 'p_bar_1', name: 'Haircut', price: 80, quantity: 1, shopId: 's_jh_2' }],
-    totalAmount: 80,
-    status: 'CONFIRMED',
-    paymentMethod: 'UPI',
-    paymentStatus: 'PAID',
-    advanceAmount: 80,
-    isDelivery: false,
-    createdAt: Date.now() - 3600000,
-    bookingDetails: {
-      visitDate: 'Today',
-      visitTime: '18:30',
-      notes: 'Please keep evening slot'
-    }
-  },
-  // Spam Order Example
-  {
-    id: 'ord_spam_1',
-    shopId: 's_jh_2',
-    customerId: 'u_spam_1',
-    customerName: 'Spam User',
-    customerMobile: '9999999999',
-    items: [],
-    totalAmount: 0,
-    status: 'PENDING',
-    paymentMethod: 'CASH',
-    paymentStatus: 'UNPAID',
-    createdAt: Date.now(),
-    isFakeFlagged: true
-  },
-  // Past Order at Sweet Shop
-  {
-    id: 'ord_sample_2',
-    shopId: 's_jh_4',
-    customerId: 'u_cust_1',
-    customerName: 'Anirban',
-    customerMobile: '9800000000',
-    items: [{ productId: 'p_swt_1', name: 'Rosogolla (1kg)', price: 250, quantity: 2, shopId: 's_jh_4' }],
-    totalAmount: 500,
-    status: 'DELIVERED',
+    items: [{ productId: 'p_phar_1', name: 'Napa Extra', price: 25, quantity: 4, shopId: 's_dh_1' }],
+    totalAmount: 100,
+    status: 'COMPLETED',
     paymentMethod: 'CASH',
     paymentStatus: 'PAID',
     isDelivery: true,
+    deliveryAddress: 'Uttara, Dhaka',
+    createdAt: Date.now() - 100000000
+  },
+  // Service Booking (Pending)
+  {
+    id: 'bk_1',
+    shopId: 'prov_1',
+    customerId: 'u_cust_1',
+    customerName: 'Anirban',
+    customerMobile: '9800000000',
+    items: [{ productId: 'srv_1', name: 'Fan Installation', price: 300, quantity: 1, shopId: 'prov_1', durationMinutes: 45 }],
+    totalAmount: 300,
+    status: 'PENDING',
+    paymentMethod: 'CASH',
+    paymentStatus: 'UNPAID',
+    isDelivery: true, // Home Visit
     deliveryAddress: 'College Para, Jhargram',
-    createdAt: Date.now() - 86400000 * 2 // 2 days ago
+    createdAt: Date.now() - 100000,
+    bookingDetails: {
+      visitDate: '2023-11-01',
+      visitTime: '15:00',
+      notes: 'Please bring ladder',
+      otp: '4592'
+    }
   }
 ];
 
+// Helper to initialize LocalStorage
 const initDB = () => {
   if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(SEED_USERS));
@@ -265,6 +249,7 @@ const initDB = () => {
 
 initDB();
 
+// DB Interface
 export const db = {
   getUsers: (): User[] => JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || '[]'),
   getShops: (): Shop[] => JSON.parse(localStorage.getItem(STORAGE_KEYS.SHOPS) || '[]'),
@@ -289,7 +274,8 @@ export const db = {
 
   saveProduct: (product: Product) => {
     const products = db.getProducts();
-    products.unshift(product);
+    const index = products.findIndex(p => p.id === product.id);
+    if (index >= 0) products[index] = product; else products.unshift(product);
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
   },
   

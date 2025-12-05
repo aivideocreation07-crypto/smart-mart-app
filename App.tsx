@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
 import { Dashboard } from './components/Dashboard';
+import { ProviderDashboard } from './components/ProviderDashboard'; // New
 import { ProductUpload } from './components/ProductUpload';
+import { ServiceManager } from './components/ServiceManager'; // New
 import { Marketing } from './components/Marketing';
 import { CustomerView } from './components/CustomerView';
 import { ShopProfileEditor } from './components/ShopProfileEditor';
@@ -40,12 +41,13 @@ export default function App() {
       stock: partial.stock || 0,
       imageUrl: partial.imageUrl || 'https://picsum.photos/200/300?random=' + Date.now(),
       tags: partial.tags || [],
-      enableBooking: partial.enableBooking
+      enableBooking: partial.enableBooking,
+      durationMinutes: partial.durationMinutes
     };
     
     db.saveProduct(newProduct);
     setCurrentView('dashboard');
-    updateVoice("Product published successfully! Customers can now see it.");
+    updateVoice(shop.businessType === 'SERVICE' ? "Service added successfully." : "Product published successfully.");
   };
 
   // Routing Logic
@@ -58,7 +60,21 @@ export default function App() {
       return <CustomerView />;
     }
 
-    // Shopkeeper Flows
+    // --- SERVICE PROVIDER FLOW ---
+    if (user.role === UserRole.SERVICE_PROVIDER) {
+        switch(currentView) {
+            case 'dashboard':
+                return <ProviderDashboard onNavigate={setCurrentView} setVoiceContext={updateVoice} />;
+            case 'add-service':
+                return <ServiceManager onSave={handleSaveProduct} onCancel={() => setCurrentView('dashboard')} setVoiceContext={updateVoice} />;
+            case 'shop-profile':
+                return <ShopProfileEditor onBack={() => setCurrentView('dashboard')} setVoiceContext={updateVoice} />;
+            default:
+                return <ProviderDashboard onNavigate={setCurrentView} setVoiceContext={updateVoice} />;
+        }
+    }
+
+    // --- RETAIL SHOPKEEPER FLOW ---
     switch (currentView) {
       case 'dashboard':
         return <Dashboard onNavigate={(view) => {
@@ -96,12 +112,11 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#020617] hero-gradient min-h-screen font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden flex flex-col border-x border-gray-900">
+    <div className="bg-slate-50 hero-gradient min-h-screen font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden flex flex-col border-x border-gray-200">
       <div className="flex-1 overflow-hidden relative">
         {renderContent()}
       </div>
 
-      {/* Voice Assistant is global but context-aware */}
       <VoiceAssistant context={voiceContext} trigger={voiceTrigger} />
     </div>
   );

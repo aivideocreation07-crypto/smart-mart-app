@@ -1,11 +1,13 @@
 
 export enum UserRole {
   SHOPKEEPER = 'SHOPKEEPER',
-  CUSTOMER = 'CUSTOMER'
+  CUSTOMER = 'CUSTOMER',
+  SERVICE_PROVIDER = 'SERVICE_PROVIDER'
 }
 
 export enum BusinessType {
-  RETAIL = 'RETAIL'
+  RETAIL = 'RETAIL',
+  SERVICE = 'SERVICE'
 }
 
 export interface User {
@@ -14,14 +16,14 @@ export interface User {
   mobile: string;
   email?: string;
   role: UserRole;
-  shopId?: string; // If shopkeeper
+  shopId?: string; // Used for both Shop and Service Profile ID
   location?: {
     lat: number;
     lng: number;
     label?: string;
   };
   following?: string[]; 
-  savedAddress?: string; // New: Auto-fill
+  savedAddress?: string;
 }
 
 export interface Review {
@@ -42,10 +44,12 @@ export interface Product {
   category: string;
   description: string;
   imageUrl?: string;
-  stock: number;
+  stock: number; // For services, this can be 999 or treated as daily capacity
   shopId: string;
   tags?: string[];
   enableBooking?: boolean;
+  // Service Specific
+  durationMinutes?: number;
 }
 
 export interface MarketingPost {
@@ -79,7 +83,7 @@ export interface Shop {
   phone: string;
   rating: number;
   ratingCount: number;
-  imageUrl?: string;
+  imageUrl?: string; // Logo or Profile Pic
   bannerUrl?: string;
   socialLinks?: {
     facebook?: string;
@@ -97,13 +101,20 @@ export interface Shop {
   
   // Feature Flags
   isDeliveryAvailable?: boolean;
-  isPickupAvailable?: boolean;
-  isCodAvailable?: boolean; // Cash on Delivery support
+  isPickupAvailable?: boolean; // For services: "Visit Shop/Center"
+  isCodAvailable?: boolean;
   
-  // New Fields
-  openingTime?: string; // e.g., "09:00"
-  closingTime?: string; // e.g., "22:00"
+  // Retail Fields
+  openingTime?: string;
+  closingTime?: string;
   refundPolicy?: 'NO_REFUND' | '50_PERCENT' | 'FULL_REFUND';
+  
+  // Service Provider Specific
+  experienceYears?: number;
+  visitingCharge?: number;
+  portfolioUrls?: string[];
+  isKycVerified?: boolean;
+  
   reviews?: Review[];
 }
 
@@ -114,6 +125,7 @@ export interface CartItem {
   quantity: number;
   shopId: string;
   enableBooking?: boolean;
+  durationMinutes?: number;
 }
 
 export interface Order {
@@ -124,21 +136,22 @@ export interface Order {
   customerMobile: string;
   items: CartItem[];
   totalAmount: number;
-  status: 'PENDING' | 'CONFIRMED' | 'READY' | 'PICKED_UP' | 'DISPATCHED' | 'OUT_FOR_DELIVERY' | 'DELIVERED' | 'CANCELLED' | 'RESCHEDULED' | 'COMPLETED';
+  status: 'PENDING' | 'CONFIRMED' | 'READY' | 'PICKED_UP' | 'DISPATCHED' | 'OUT_FOR_DELIVERY' | 'DELIVERED' | 'CANCELLED' | 'RESCHEDULED' | 'COMPLETED' | 'ACCEPTED' | 'REJECTED';
   paymentMethod: 'CASH' | 'UPI' | 'QR';
   paymentStatus: 'UNPAID' | 'PARTIAL' | 'PAID';
   advanceAmount?: number;
   paymentScreenshot?: string;
-  deliveryAddress?: string;
+  deliveryAddress?: string; // For services: Service Address
   deliveryLink?: string;
   bookingDetails?: {
     visitDate: string;
     visitTime: string;
     notes?: string;
+    otp?: string; // Service Start OTP
   };
   createdAt: number;
-  isDelivery?: boolean;
-  isFakeFlagged?: boolean; // Spam detection flag
+  isDelivery?: boolean; // For services: "Home Service"
+  isFakeFlagged?: boolean;
 }
 
 export interface AuthState {

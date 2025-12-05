@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Plus, ShoppingBag, Megaphone, LogOut, Store, QrCode, TrendingUp, Package, Truck, CheckCircle, Star, Bell } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -29,7 +28,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       }
   };
 
-  if (!shop) return <div className="p-10 text-center text-gray-400">Loading Shop Data...</div>;
+  if (!shop) return <div className="p-10 text-center text-gray-500">Loading Shop Data...</div>;
   
   const pendingCount = orders.filter(o => o.status === 'PENDING').length;
 
@@ -37,62 +36,62 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
     <div className="p-5 space-y-6 pb-24 h-full overflow-y-auto hide-scrollbar">
       
       {/* 1. HERO DIGITAL PASS */}
-      <div className="glass-panel rounded-3xl p-1 relative overflow-hidden shadow-2xl animate-fade-in-up">
+      <div className="glass-panel rounded-3xl p-1 relative overflow-hidden shadow-xl animate-fade-in-up">
         {/* Banner Background */}
-        <div className="absolute inset-0 z-0 opacity-60">
+        <div className="absolute inset-0 z-0">
           {shop.bannerUrl ? (
             <img src={shop.bannerUrl} alt="Cover" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-orange-900 to-gray-900"></div>
+            <div className="w-full h-full bg-gradient-to-br from-orange-50 to-slate-200"></div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
         </div>
 
         {/* Content */}
         <div className="relative z-10 p-5">
            <div className="flex justify-between items-start mb-6">
               <div className="flex items-center space-x-3">
-                 <div className="w-12 h-12 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center overflow-hidden">
-                    {shop.imageUrl ? <img src={shop.imageUrl} className="w-full h-full object-cover"/> : <span className="font-bold text-xl text-orange-500">{shop.name[0]}</span>}
+                 <div className="w-12 h-12 rounded-xl bg-white/60 backdrop-blur-md border border-white/40 flex items-center justify-center overflow-hidden shadow-sm">
+                    {shop.imageUrl ? <img src={shop.imageUrl} className="w-full h-full object-cover"/> : <span className="font-bold text-xl text-orange-600">{shop.name[0]}</span>}
                  </div>
                  <div>
-                    <h1 className="text-xl font-bold text-white font-bengali tracking-wide leading-tight flex items-center gap-1">
+                    <h1 className="text-xl font-bold text-slate-900 font-bengali tracking-wide leading-tight flex items-center gap-1">
                         {shop.name}
                         {shop.isVerified && <CheckCircle size={14} className="text-blue-500 fill-current" />}
                     </h1>
-                    <p className="text-xs text-gray-300 font-medium tracking-wider uppercase opacity-80">{shop.category}</p>
+                    <p className="text-xs text-slate-600 font-medium tracking-wider uppercase opacity-80">{shop.category}</p>
                  </div>
               </div>
-              <button onClick={() => onNavigate('shop-profile')} className="bg-white/10 p-2 rounded-full hover:bg-white/20 backdrop-blur-md border border-white/10 transition-colors">
-                  <Store size={18} className="text-white" />
+              <button onClick={() => onNavigate('shop-profile')} className="bg-white/60 p-2 rounded-full hover:bg-white/80 backdrop-blur-md border border-white/20 transition-colors shadow-sm">
+                  <Store size={18} className="text-slate-700" />
               </button>
            </div>
 
            {/* Stats Row */}
            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col items-center">
-                 <Package size={16} className="text-cyan-400 mb-1" />
-                 <span className="text-lg font-bold text-white">{products.length}</span>
-                 <span className="text-[10px] text-gray-400 uppercase tracking-widest">
+              <div className="bg-white/60 backdrop-blur-md rounded-2xl p-3 border border-white/20 flex flex-col items-center shadow-sm">
+                 <Package size={16} className="text-cyan-600 mb-1" />
+                 <span className="text-lg font-bold text-slate-900">{products.length}</span>
+                 <span className="text-[10px] text-slate-500 uppercase tracking-widest">
                      Items
                  </span>
               </div>
-              <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col items-center relative">
+              <div className="bg-white/60 backdrop-blur-md rounded-2xl p-3 border border-white/20 flex flex-col items-center relative shadow-sm">
                  {pendingCount > 0 && <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>}
-                 <TrendingUp size={16} className="text-green-400 mb-1" />
-                 <span className="text-lg font-bold text-white">
+                 <TrendingUp size={16} className="text-green-600 mb-1" />
+                 <span className="text-lg font-bold text-slate-900">
                      {orders.length}
                  </span>
-                 <span className="text-[10px] text-gray-400 uppercase tracking-widest">
+                 <span className="text-[10px] text-slate-500 uppercase tracking-widest">
                      Orders
                  </span>
               </div>
-              <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center">
-                 <div className="flex items-center text-yellow-400 gap-1">
+              <div className="bg-white/60 backdrop-blur-md rounded-2xl p-3 border border-white/20 flex flex-col items-center justify-center shadow-sm">
+                 <div className="flex items-center text-yellow-500 gap-1">
                      <span className="font-bold text-lg">{shop.rating}</span>
                      <Star size={12} fill="currentColor"/>
                  </div>
-                 <span className="text-[10px] text-gray-400 uppercase tracking-widest">({shop.ratingCount})</span>
+                 <span className="text-[10px] text-slate-500 uppercase tracking-widest">({shop.ratingCount})</span>
               </div>
            </div>
         </div>
@@ -100,30 +99,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
       {/* 2. DELIVERY TOGGLE (If Tie-Up) */}
       {(shop.hasDeliveryPartner || shop.isDeliveryAvailable) && (
-          <div className="glass-panel p-4 rounded-2xl flex items-center justify-center sm:justify-between border border-white/5">
+          <div className="glass-panel p-4 rounded-2xl flex items-center justify-center sm:justify-between border border-gray-100">
               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                       <Truck size={20} />
                   </div>
                   <div>
-                      <h3 className="text-white font-bold text-sm">Logistics Status</h3>
-                      <p className="text-xs text-gray-400">{shop.isDeliveryAvailable ? 'Accepting deliveries' : 'Delivery paused'}</p>
+                      <h3 className="text-slate-900 font-bold text-sm">Logistics Status</h3>
+                      <p className="text-xs text-slate-500">{shop.isDeliveryAvailable ? 'Accepting deliveries' : 'Delivery paused'}</p>
                   </div>
               </div>
               <div 
                 onClick={toggleDelivery}
-                className={`w-12 h-6 rounded-full relative transition-colors cursor-pointer ml-4 ${shop.isDeliveryAvailable ? 'bg-green-500' : 'bg-gray-700'}`}
+                className={`w-12 h-6 rounded-full relative transition-colors cursor-pointer ml-4 ${shop.isDeliveryAvailable ? 'bg-green-500' : 'bg-slate-300'}`}
               >
-                 <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${shop.isDeliveryAvailable ? 'translate-x-6' : ''}`}></div>
+                 <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform shadow-sm ${shop.isDeliveryAvailable ? 'translate-x-6' : ''}`}></div>
               </div>
           </div>
       )}
 
-      {/* 3. NEON ACTION GRID */}
+      {/* 3. ACTION GRID */}
       <div>
         <div className="flex justify-between items-end mb-4 px-1">
-            <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Control Center</h2>
-            <button onClick={logout} className="text-xs text-red-400 hover:text-red-300 flex items-center transition-colors">
+            <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Control Center</h2>
+            <button onClick={logout} className="text-xs text-red-500 hover:text-red-600 flex items-center transition-colors">
               <LogOut size={12} className="mr-1"/> Sign Out
             </button>
         </div>
@@ -131,53 +130,53 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-2 gap-4">
           <button 
             onClick={() => onNavigate('add-product')}
-            className="group relative h-32 glass-panel rounded-3xl overflow-hidden hover:neon-border-orange transition-all duration-300"
+            className="group relative h-32 glass-panel rounded-3xl overflow-hidden hover:border-orange-200 transition-all duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all"></div>
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition-all shadow-lg shadow-orange-500/10">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent group-hover:from-orange-100 transition-all"></div>
+            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-all shadow-lg shadow-orange-500/10">
                <Plus size={24} />
             </div>
             <div className="absolute bottom-4 left-4 text-left">
-               <span className="block text-white font-bold text-lg group-hover:translate-x-1 transition-transform">
+               <span className="block text-slate-800 font-bold text-lg group-hover:translate-x-1 transition-transform">
                    Add Item
                </span>
-               <span className="text-xs text-gray-400">Inventory</span>
+               <span className="text-xs text-slate-500">Inventory</span>
             </div>
           </button>
 
           <button 
             onClick={() => onNavigate('marketing')}
-            className="group relative h-32 glass-panel rounded-3xl overflow-hidden hover:neon-border-cyan transition-all duration-300"
+            className="group relative h-32 glass-panel rounded-3xl overflow-hidden hover:border-cyan-200 transition-all duration-300"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent group-hover:from-cyan-500/20 transition-all"></div>
-            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all shadow-lg shadow-cyan-500/10">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 to-transparent group-hover:from-cyan-100 transition-all"></div>
+            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-all shadow-lg shadow-cyan-500/10">
                <Megaphone size={24} />
             </div>
             <div className="absolute bottom-4 left-4 text-left">
-               <span className="block text-white font-bold text-lg group-hover:translate-x-1 transition-transform">Marketing</span>
-               <span className="text-xs text-gray-400">AI Boost</span>
+               <span className="block text-slate-800 font-bold text-lg group-hover:translate-x-1 transition-transform">Marketing</span>
+               <span className="text-xs text-slate-500">AI Boost</span>
             </div>
           </button>
 
           {/* Type Specific Action */}
           <button 
             onClick={() => onNavigate('orders')}
-            className="col-span-2 group relative h-20 glass-panel rounded-3xl overflow-hidden opacity-90 hover:opacity-100 transition-opacity"
+            className="col-span-2 group relative h-20 glass-panel rounded-3xl overflow-hidden hover:bg-white transition-opacity"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-transparent group-hover:from-purple-900/60 transition-all"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-50 to-transparent group-hover:from-purple-100 transition-all"></div>
             <div className="absolute inset-0 flex items-center justify-between px-6">
                 <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
                         <ShoppingBag size={20} />
                     </div>
                     <div className="text-left">
-                        <span className="block text-white font-bold">Manage Orders</span>
-                        <span className="text-xs text-gray-400">{pendingCount} Pending • {orders.filter(o => o.bookingDetails).length} Bookings</span>
+                        <span className="block text-slate-800 font-bold">Manage Orders</span>
+                        <span className="text-xs text-slate-500">{pendingCount} Pending • {orders.filter(o => o.bookingDetails).length} Bookings</span>
                     </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors relative">
-                    <span className="text-white text-xs font-bold">{orders.length}</span>
-                    {pendingCount > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-black"></span>}
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-white transition-colors relative border border-slate-200">
+                    <span className="text-slate-700 text-xs font-bold">{orders.length}</span>
+                    {pendingCount > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-white"></span>}
                 </div>
             </div>
           </button>
@@ -187,31 +186,31 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
       {/* 4. INVENTORY GRID */}
       <div>
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 px-1">
+        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 px-1">
             Shop Showcase
         </h2>
         <div className="grid grid-cols-2 gap-4">
           {products.length === 0 ? (
-            <div className="col-span-2 p-8 border border-dashed border-gray-700 rounded-3xl text-center">
-              <p className="text-gray-500 text-sm">Your showcase is empty.</p>
+            <div className="col-span-2 p-8 border border-dashed border-slate-300 rounded-3xl text-center">
+              <p className="text-slate-500 text-sm">Your showcase is empty.</p>
             </div>
           ) : (
             products.map(p => (
-              <div key={p.id} className="cinematic-card rounded-2xl p-3 flex flex-col group hover:border-gray-500 transition-colors">
-                 <div className="aspect-square rounded-xl bg-gray-800 overflow-hidden mb-3 relative">
-                   {p.imageUrl && <img src={p.imageUrl} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="" />}
+              <div key={p.id} className="cinematic-card rounded-2xl p-3 flex flex-col group hover:border-slate-300 transition-colors">
+                 <div className="aspect-square rounded-xl bg-slate-100 overflow-hidden mb-3 relative">
+                   {p.imageUrl && <img src={p.imageUrl} className="w-full h-full object-cover group-hover:scale-105 transition-transform" alt="" />}
                    {p.stock >= 0 && (
-                       <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-xs px-2 py-0.5 rounded text-white font-bold">
+                       <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-xs px-2 py-0.5 rounded text-slate-800 font-bold shadow-sm">
                           {p.stock}
                        </div>
                    )}
                  </div>
                  <div className="flex-1">
-                   <h3 className="text-white font-bold text-sm truncate leading-tight">{p.nameBn || p.name}</h3>
-                   <p className="text-xs text-gray-500 mb-2 truncate">{p.name}</p>
+                   <h3 className="text-slate-900 font-bold text-sm truncate leading-tight">{p.nameBn || p.name}</h3>
+                   <p className="text-xs text-slate-500 mb-2 truncate">{p.name}</p>
                    <div className="flex items-center justify-between">
-                       <span className="text-orange-500 font-bold text-sm">৳{p.price}</span>
-                       <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                       <span className="text-orange-600 font-bold text-sm">৳{p.price}</span>
+                       <div className="w-2 h-2 rounded-full bg-green-500 shadow-sm"></div>
                    </div>
                  </div>
               </div>

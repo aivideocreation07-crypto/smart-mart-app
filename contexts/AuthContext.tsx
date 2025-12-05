@@ -8,8 +8,10 @@ interface AuthContextType {
   shop: Shop | null;
   login: (mobile: string) => boolean;
   registerShopkeeper: (name: string, mobile: string, shopDetails: Partial<Shop>) => void;
+  registerServiceProvider: (name: string, mobile: string, shopDetails: Partial<Shop>) => void;
   registerCustomer: (name: string, mobile: string) => void;
   updateShopProfile: (updates: Partial<Shop>) => void;
+  updateUser: (updates: Partial<User>) => void;
   logout: () => void;
 }
 
@@ -27,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const foundUser = users.find(u => u.id === userId);
       if (foundUser) {
         setUser(foundUser);
-        if (foundUser.role === UserRole.SHOPKEEPER) {
+        if (foundUser.role === UserRole.SHOPKEEPER || foundUser.role === UserRole.SERVICE_PROVIDER) {
           const foundShop = db.getShopByOwnerId(foundUser.id);
           setShop(foundShop || null);
         }
@@ -40,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (foundUser) {
       setUser(foundUser);
       db.setSession(foundUser.id);
-      if (foundUser.role === UserRole.SHOPKEEPER) {
+      if (foundUser.role === UserRole.SHOPKEEPER || foundUser.role === UserRole.SERVICE_PROVIDER) {
         const foundShop = db.getShopByOwnerId(foundUser.id);
         setShop(foundShop || null);
       }
@@ -67,11 +69,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       name: shopDetails.name!,
       ownerName: name,
       category: shopDetails.category || 'General',
-      businessType: shopDetails.businessType || BusinessType.RETAIL,
+      businessType: BusinessType.RETAIL,
       location: shopDetails.location || { lat: 23.8103, lng: 90.4125, address: 'Unknown' },
       phone: mobile,
       rating: 5.0,
       ratingCount: 0
+    };
+
+    db.saveUser(newUser);
+    db.saveShop(newShop);
+    
+    setUser(newUser);
+    setShop(newShop);
+    db.setSession(newUser.id);
+  };
+
+  const registerServiceProvider = (name: string, mobile: string, shopDetails: Partial<Shop>) => {
+    const userId = 'prov_u' + Date.now();
+    const shopId = 'prov_' + Date.now();
+    
+    const newUser: User = {
+      id: userId,
+      name,
+      mobile,
+      role: UserRole.SERVICE_PROVIDER,
+      shopId
+    };
+
+    const newShop: Shop = {
+      id: shopId,
+      ownerId: userId,
+      name: shopDetails.name!,
+      ownerName: name,
+      category: shopDetails.category || 'Other',
+      businessType: BusinessType.SERVICE,
+      location: shopDetails.location || { lat: 23.8103, lng: 90.4125, address: 'Unknown' },
+      phone: mobile,
+      rating: 5.0,
+      ratingCount: 0,
+      experienceYears: shopDetails.experienceYears || 0,
+      isVerified: false
     };
 
     db.saveUser(newUser);
@@ -102,6 +139,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setShop(updatedShop);
   };
 
+  const updateUser = (updates: Partial<User>) => {
+    if (!user) return;
+    const updatedUser = { ...user, ...updates };
+    db.saveUser(updatedUser);
+    setUser(updatedUser);
+  };
+
   const logout = () => {
     setUser(null);
     setShop(null);
@@ -109,7 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, shop, login, registerShopkeeper, registerCustomer, updateShopProfile, logout }}>
+    <AuthContext.Provider value={{ user, shop, login, registerShopkeeper, registerServiceProvider, registerCustomer, updateShopProfile, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

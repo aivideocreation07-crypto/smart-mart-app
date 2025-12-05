@@ -8,9 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg-midnight: #020617; /* Slate 950 - Deepest Blue */
-        --glass-bg: rgba(15, 23, 42, 0.65);
-        --glass-border: rgba(255, 255, 255, 0.08);
+        --bg-midnight: #f8fafc; /* Slate 50 - Light Background */
+        --glass-bg: rgba(255, 255, 255, 0.75); /* White glass */
+        --glass-border: rgba(0, 0, 0, 0.06);
         --neon-orange: #f97316;
         --neon-cyan: #06b6d4;
         --neon-purple: #8b5cf6;
@@ -19,7 +19,7 @@
       body {
         font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
         background-color: var(--bg-midnight);
-        color: #f3f4f6;
+        color: #0f172a; /* Slate 900 */
         overscroll-behavior-y: none;
         -webkit-tap-highlight-color: transparent;
       }
@@ -32,8 +32,8 @@
       
       .hero-gradient {
         background: 
-          radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
+          radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
       }
 
       .glass-panel {
@@ -41,35 +41,35 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--glass-border);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       }
 
       .glass-dock {
-        background: rgba(2, 6, 23, 0.85);
+        background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
       }
 
       .cinematic-card {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+        background: white;
         border: 1px solid var(--glass-border);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
       }
 
       .neon-border-orange {
         border: 1px solid rgba(249, 115, 22, 0.5);
-        box-shadow: 0 0 15px -3px rgba(249, 115, 22, 0.25);
+        box-shadow: 0 0 15px -3px rgba(249, 115, 22, 0.2);
       }
 
       .neon-border-cyan {
         border: 1px solid rgba(6, 182, 212, 0.5);
-        box-shadow: 0 0 15px -3px rgba(6, 182, 212, 0.25);
+        box-shadow: 0 0 15px -3px rgba(6, 182, 212, 0.2);
       }
 
       .text-glow {
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
       }
 
       /* --- ANIMATIONS --- */
@@ -103,7 +103,7 @@
         100% { background-position: 200% 0; }
       }
       .animate-shimmer {
-        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.05) 50%, rgba(255,255,255,0) 100%);
         background-size: 200% 100%;
         animation: shimmer 3s infinite;
       }
